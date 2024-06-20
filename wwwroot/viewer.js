@@ -1,5 +1,10 @@
 /// import * as Autodesk from "@types/forge-viewer";
 
+import './extensions/LoggerExtension.js';
+import './extensions/SummaryExtension.js';
+import './extensions/DataGridExtension.js';
+import './extensions/HistogramExtension.js';
+
 async function getAccessToken(callback) {
     try {
         const resp = await fetch('/api/auth/token');
@@ -16,9 +21,15 @@ async function getAccessToken(callback) {
 
 export function initViewer(container) {
     return new Promise(function (resolve, reject) {
-        Autodesk.Viewing.Initializer({ env: 'AutodeskProduction', getAccessToken }, function () {
+        Autodesk.Viewing.Initializer({ getAccessToken }, function () {
             const config = {
-                extensions: ['Autodesk.DocumentBrowser']
+                extensions: [
+                    'Autodesk.DocumentBrowser',
+                    'LoggerExtension',
+                    'SummaryExtension',
+                    'DataGridExtension',
+                    'HistogramExtension'
+                ]
             };
             const viewer = new Autodesk.Viewing.GuiViewer3D(container, config);
             viewer.start();
